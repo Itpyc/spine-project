@@ -1,0 +1,48 @@
+<ion-view view-title="{{patient.cureUserName}}" hide-tabs="true">
+  <ion-content class="" on-swipe-right="onSwipeRight();">
+    <!-- <img ng-src="{{patient.face}}" style="width: 64px; height: 64px">
+     <p>
+       {{patient.lastText}}
+     </p>-->
+    <div class="">
+      <!--  <div class="item item-divider" style="text-align: center;">
+          未接诊详情
+        </div>-->
+      <div class="item item-avatar">
+        <img src="../img/max.png">
+        <h2>{{patient.docName}}</h2>
+        <p>{{patient.askTime}}发出问诊请求</p>
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row" style="font-size: 1.2rem">
+          <div class="col">姓名：{{patient.cureUserName}}</div>
+          <div class="col">性别：{{patient.userSex =='1'?'男':'女'}}</div>
+          <!--<div class="col">民族：{{patient.patietnInfo.native}}</div>-->
+          <div class="col">民族：{{patient.birthday}}</div>
+        </div>
+        <div class="row" style="font-size: 1.2rem;margin-top: 50px;">
+          <div class="col">年龄：{{patient.ageNum}}</div>
+          <div class="col">身高：{{patient.userHeight}} cm</div>
+          <div class="col">体重：{{patient.userWeight}} kg</div>
+        </div>
+        <div class="row" style="font-size: 1.2rem;margin-top: 50px;">
+          治疗病史:
+          <div style="border-bottom: 1px #000000 solid;min-width: 80%;padding-left: 10px;">无</div>
+        </div>
+        <div class="row" style="font-size: 1.2rem;margin-top: 50px;" >
+          初诊建议:
+          <div style="border-bottom: 1px #000000 solid;min-width: 80%;padding-left: 10px;">{{patient.userRemark}}</div>
+        </div>
+      </div>
+      <div class="item item-divider" style="font-size: 1.2rem;background: inherit;padding: 10px;" >
+        未接诊原因:
+        <span style="">{{patient.userRemark}}</span>
+      </div>
+
+    </div>
+
+
+  </ion-content>
+</ion-view>
+
+

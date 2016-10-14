@@ -1,0 +1,39 @@
+<ion-view view-title="接诊">
+  <ion-content>
+ <ion-refresher ng-if="!newMsg" pulling-text="刷新中" on-refresh="JZ_Refresh();"></ion-refresher>
+    <div ng-show="showPatientInfo">
+      <div class="item item-avatar">
+        <img ng-src="img/doctor.png">
+        <h2>{{patientInfo_new.askUser}}</h2>
+        <p>{{patientInfo_new.askTime}}发出问诊请求</p>
+      </div>
+      <div class="item item-text-wrap" >
+        <h1 class="title spine-title" style="font-size: 1.5rem;">病人基本信息</h1>
+         <div class="spine-sick-avatar" style="margin-top: 30px;">
+          <img  ng-src="img/bingrenxinxi.png">
+        </div>
+        <div class="row" style="font-size: 1.4rem;margin-top: 30px;margin-left: 50px;">
+          <div class="col">姓名：<span>{{patientInfo_new.userName}}</span></div>
+          <div class="col">性别：{{patientInfo_new.userSex=='1'?'男':'女';}}</div>
+          <div class="col">生日：{{patientInfo_new.birthday}}</div>
+        </div>
+        <div class="row" style="font-size: 1.4rem;margin-top: 50px;margin-left: 50px;">
+          <div class="col">年龄：{{patientInfo_new.ageNum}}</div>
+          <div class="col">身高：{{patientInfo_new.userHeight}}</div>
+          <div class="col">体重：{{patientInfo_new.userWeight}}</div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 10%">
+        <div class="col">
+          <button class="button button-small button-block button-assertive" ng-click="refuseWZ();">不接诊</button>
+        </div>
+        <div class="col">
+          <button class="button button-small button-block button-calm" ng-click="acceptWZ();">接诊</button>
+        </div>
+      </div>
+    </div>
+    <div ng-show="!showPatientInfo" style="text-align: center;padding-top: 20%;">
+      <h3>当前无问诊请求</h3>
+    </div>
+  </ion-content>
+</ion-view>

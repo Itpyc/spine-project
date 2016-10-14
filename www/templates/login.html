@@ -1,0 +1,23 @@
+<ion-view view-title="登录">
+  <ion-content style="overflow: hidden;">
+   <!-- <button class="button button-calm" ng-click="returnToMain();">返回</button>-->
+    <div class="spine-brand" >
+    </div>
+    <div class="list" >
+      <label class="item item-input">
+        <i class="icon ion-ios-person placeholder-icon" style="font-size: 1.5rem;padding-right: 10px;"></i>
+        <input type="text" style="height: 50px;font-size: 1rem;" placeholder="输入用户名" required ng-model="userInfo.username">
+      </label>
+      <label class="item item-input">
+        <i class="icon ion-ios-locked placeholder-icon" style="font-size: 1.5rem;padding-right: 10px;"></i>
+        <input type="password" style="height: 50px;font-size: 1rem;" placeholder="输入密码" required ng-model="userInfo.password">
+      </label>
+      <div style="width: 80%; margin: 10% auto;">
+        <button class="button button-assertive button-block"  on-tap="ToLogin();">
+          登录
+        </button>
+      </div>
+
+    </div>
+  </ion-content>
+</ion-view>

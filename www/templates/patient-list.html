@@ -1,0 +1,35 @@
+<ion-view view-title="{{listTitle}}" hide-tabs="true" show-tabs="true">
+  <ion-content id="patientList" on-swipe-right="onSwipeRight();">
+    <!--  <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh();"></ion-refresher>-->
+      <ion-list ng-show="listTitle === '未接诊病人列表'">
+        <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="patient in NJZList_All"
+                  type="item-text-wrap" ng-click="goToDetail(patient.askId,patient)">
+          <!--<img ng-src="{{patient.face}}">-->
+          <img ng-src="img/doctor.png">
+          <h2>
+            申请人：{{patient.docName}}
+            <span class="shenqing-time" style="">{{patient.askTime}}</span>
+          </h2>
+          <p>病人信息：{{patient.cureUserName}}，{{patient.userSex=='1'?'男':'女';}}，身高{{patient.userHeight}}cm，体重{{patient.userWeight}}kg</p>
+          <!-- <p>病人描述：{{chat.desc}}</p>-->
+          <i class="icon ion-chevron-right icon-accessory"></i>
+        </ion-item>
+      </ion-list>
+    <ion-list ng-show="listTitle === '已接诊病人列表'">
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="patient in YJZList_All"
+                type="item-text-wrap" ng-click="goToDetail_y(patient.askId,patient)" >
+      <!--  <img ng-src="{{patient.face}}">-->
+        <img ng-src="img/doctor.png">
+        <!-- <p>病人描述：{{chat.desc}}</p>-->
+        <h2>
+          申请人：{{patient.docName}}
+          <span class="shenqing-time" style="">{{patient.askTime}}</span>
+        </h2>
+        <p>病人信息：{{patient.cureUserName}}，{{patient.userSex=='1'?'男':'女';}}，身高{{patient.userHeight}}cm，体重{{patient.userWeight}}kg</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
+    <h1 ng-if="offlineState" style="text-align: center">网络连接失败，请检查网络</h1>
+    <ion-infinite-scroll ng-if="moreData" distance="1%" immediate-check="true" on-infinite="loadMore()"></ion-infinite-scroll>
+  </ion-content>
+</ion-view>

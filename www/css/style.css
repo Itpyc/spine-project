@@ -1,0 +1,147 @@
+/* Empty. Add your own CSS if you like */
+
+.chart {
+  width: 100%;
+  margin: 0px;
+  height: 400px;
+}
+/*.scroll-content{
+  background: #eeeeee !important;
+}*/
+.spine-brand {
+  margin: 80px auto;
+  text-align: center;
+  height: 100px;
+  width: 100px;
+  border-radius: 100px;
+  background-image: url("../img/logo.png");
+  background-position: center;
+  background-size: contain;
+  padding: 80px;
+}
+
+#remoteVideo {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  top: 0;
+}
+
+#localVideo {
+  position: absolute;
+  right: 0;
+  top: 400px;
+  bottom: 0;
+  width: 300px;
+  height: 300px;
+  z-index: 9999;
+}
+
+.spine-title {
+  text-align: center;
+}
+
+.spine-sick-avatar {
+  max-width: 60px;
+  text-align: center;
+  margin: 15px auto;
+}
+
+.spine-sick-avatar img {
+  max-width: 60px;
+}
+
+.bageStyle {
+  background-color: red !important;
+}
+
+.confirm {
+  width: 100%;
+  text-align: center;
+}
+
+.popup {
+  width: 500px !important;
+}
+
+.col-33 {
+  text-align: center;
+  border-left: 1px #eee solid;
+  font-size: 18px;
+  padding: 10px;
+}
+
+.shenqing-time {
+  float: right;
+  font-size: 14px;
+  color: #929596;
+}
+
+.col {
+
+}
+.toggleNotication{
+  color: lightgray;
+}
+/*.modal{
+  top:0;
+  right:0;
+  width:100%;
+  height:100%;
+  left:0;
+  bottom:0;
+  background: rgba(0,0,0,0.6);
+}*/
+.transparent {
+  background: transparent !important;
+}
+.modal {
+  width: 100% !important;
+  height: 100%;
+  top: 0 !important;
+  left: 0 !important;
+  background: transparent !important;
+}
+.fullscreen-image {
+  max-width: 100%;
+  max-height: 100%;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+.slider {
+  width: 100%;
+  height: 100%;
+}
+
+p.info {
+  position: absolute;
+  bottom: 55px;
+  margin: 0 auto;
+  width: 100%;
+  display: block;
+  text-align: center;
+  font-size: 28px;
+  color: #ffffff;
+}
+.box{
+  height:100%;
+  width: 100%;
+}
+
+/* Fix modal backdrop for smaller devices */
+@media (max-width: 679px) {
+  .active .modal-backdrop-bg {
+    opacity: .5;
+  }
+  .modal-backdrop-bg {
+    -webkit-transition: opacity 300ms ease-in-out;
+    transition: opacity 300ms ease-in-out;
+    background-color: #000;
+    opacity: 0;
+  }
+}

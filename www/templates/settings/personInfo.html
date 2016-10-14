@@ -1,0 +1,86 @@
+<ion-view view-title="个人信息" hide-tabs="true">
+  <ion-content on-swipe-right="onSwipeRight();">
+    <div class="list">
+      <div class="item item-thumbnail-right" ng-click="changeAvatar();">
+        <img ng-src="{{personInfo.picturePath}}">
+        <h2 style="padding-top: 30px;">头像设置</h2>
+      </div>
+      <div class="item" ng-click="editInfo('name')">
+        昵称
+        <span class="item-note">
+          {{personInfo.loginName}}
+        </span>
+      </div>
+      <div class="item item-divider"></div>
+      <div class="item" ng-click="editInfo('name')">
+        姓名
+        <span class="item-note">
+          {{personInfo.userName}}
+        </span>
+      </div>
+      <div class="item" ng-click="editInfo('sex')">
+        性别
+        <span class="item-note">
+          {{personInfo.sex}}
+        </span>
+      </div>
+    <!--  <div class="item" ng-click="editInfo('nation')">
+        民族
+        <span class="item-note">
+                  {{personInfo.nation}}
+        </span>
+      </div>
+      <div class="item" ng-click="editInfo('age')">
+        年龄
+        <span class="item-note">
+          {{personInfo.age}}
+        </span>
+      </div>
+      <div class="item" ng-click="editInfo('birthday')">
+        生日
+        <span class="item-note">
+          {{personInfo.birthday}}
+        </span>
+      </div>-->
+      <div class="item" ng-click="editInfo('jiguan')">
+        地址
+        <span class="item-note">
+          {{personInfo.userAddress}}
+        </span>
+      </div>
+      <!--职称级别-->
+      <div class="item item-divider"></div>
+      <div class="item" ng-click="editInfo('zhicheng')">
+        职称
+        <span class="item-note">
+          {{personInfo.zhicheng}}
+        </span>
+      </div>
+      <div class="item" ng-click="editInfo('hospital')">
+        医院
+        <span class="item-note">
+          {{personInfo.hospital}}
+        </span>
+      </div>
+      <div class="item" ng-click="editInfo('shanchang')">
+        擅长
+        <span class="item-note">
+          {{personInfo.shanchang}}
+        </span>
+      </div>
+      <div class="item" ng-click="editInfo('xueli')">
+        学历
+        <span class="item-note">
+          {{personInfo.xueli}}
+        </span>
+      </div>
+      <div class="item" ng-click="editInfo('congyeshijian')">
+        从业时间
+        <span class="item-note">
+          {{personInfo.congyeshijian}}
+        </span>
+      </div>
+
+    </div>
+  </ion-content>
+</ion-view>

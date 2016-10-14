@@ -1,0 +1,202 @@
+<ion-view view-title="诊断室" hide-back-button="true">
+  <ion-content style="background-color: #f5f5f5">
+    <div class="card">
+      <div class="item item-positive">
+        病人基本信息
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row" style="font-size: 1.2rem">
+          <div class="col">姓名：{{patientDetailInfo.userName}}</div>
+          <div class="col">性别：{{patientDetailInfo.userSex =='1'?'男':'女'}}</div>
+          <div class="col">生日：{{patientDetailInfo.birthday}}</div>
+        </div>
+        <div class="row" style="font-size: 1.2rem;margin-top: 50px;">
+          <div class="col">年龄：{{patientDetailInfo.ageNum}}</div>
+          <div class="col">身高：{{patientDetailInfo.userHeight}}CM</div>
+          <div class="col">体重：{{patientDetailInfo.userWeight}}KG</div>
+        </div>
+        <div class="row" style="font-size: 1.2rem;margin-top: 50px;">
+          治疗病史:
+          <div style="border-bottom: 1px #000000 solid;min-width: 80%;padding-left: 10px;">无</div>
+        </div>
+        <div class="row" style="font-size: 1.2rem;margin-top: 50px;" ->
+          初诊建议:
+          <div style="border-bottom: 1px #000000 solid;min-width: 80%;padding-left: 10px;">{{patientDetailInfo.userRemark}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="card" ng-click="openModal()">
+      <div class="item item-assertive">
+        X光片查看
+        <!--<h1 class="spine-title">X光片查看</h1>-->
+      </div>
+      <ul class="list">
+        <li class="item" ng-repeat="ximg in patientDetailInfo.patietnInfo.X_Img track by $index">
+          <div class="card">
+            <div class="item item-image">
+              <img ng-src="{{ximg.src}}">
+            </div>
+            <div class="item item-divider">
+              <h2 style="text-align: center">x光片名称1</h2>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="item  item-balanced">
+        提交诊断结果
+        <!--   <h1 class="spine-title">提交诊断结果</h1>-->
+      </div>
+      <div class="item item-text-wrap">
+        <div style="margin-bottom: 20px;">请选择您的诊治意见：</div>
+        <ion-radio ng-repeat="item in clientSideList"
+                   ng-value="item.value"
+                   ng-model="data.choseValue">
+          {{ item.text }}
+        </ion-radio>
+      </div>
+    </div>
+
+    <div class="card" ng-if="data.choseValue == 'refuse'">
+      <!--禁忌症-->
+      <div class="item item-divider">
+        请选择禁忌症：
+      </div>
+      <div class="item item-text-wrap">
+        <ion-checkbox class="item-checkbox-right" ng-repeat="item in jjzList"
+                      ng-model="item.checked"
+        >
+          {{ item.text }}
+        </ion-checkbox>
+      </div>
+    </div>
+    <div class="card" ng-if="data.choseValue == 'yes'">
+      <!--治疗参数-->
+      <div class="item item-divider">
+        请填写治疗参数：
+      </div>
+      <div class="item item-text-wrap">
+        <div class="list">
+          <div class="item item-button-right">
+            选择病变部位：
+            <button class="button button-light" ng-click="openSickPlacePop($event)"
+                    style="max-width: 80%;overflow: hidden">
+              {{sickPlaceChosed}}
+              <i style="margin-left: 10px;margin-right: -10px;" class="icon ion-android-arrow-dropdown"></i>
+            </button>
+          </div>
+          <div class="item item-input item-select">
+            <div class="input-label">
+              选择病变偏向
+            </div>
+            <select ng-model="sickDir" ng-options="item for item in sickDirs">
+            </select>
+          </div>
+
+          <div class="item item-input item-select">
+            <div class="input-label">
+              选择病变程度
+            </div>
+            <select ng-model="sickLevel" ng-options="item for item in sickLevels">
+            </select>
+          </div>
+
+          <div class="item item-input item-select">
+            <div class="input-label">
+              冲击行程
+            </div>
+            <select ng-model="ciDistance_chosed" ng-options="item for item in ciDistance_all">
+            </select>
+          </div>
+
+          <div class="item item-input item-select">
+            <div class="input-label">
+              成角
+            </div>
+            <select ng-model="ciAngulation_chosed" ng-options="item for item in ciAngulation_all">
+            </select>
+          </div>
+
+          <div class="item item-input item-select">
+            <div class="input-label">
+              转角
+            </div>
+            <select ng-model="ciCorner_chosed" ng-options="item for item in ciCorner_all">
+            </select>
+          </div>
+
+
+          <!-- <div class="item item-input item-select">
+             <div class="input-label">
+               选择转角方式
+             </div>
+             <select ng-model="ZJFS" ng-options="item for item in ZJFSs">
+             </select>
+           </div>-->
+        </div>
+      </div>
+    </div>
+
+    <div class="item item-divider item-borderless">
+      <button class="button button-block button-assertive" ng-click="submitHZResult();" style="margin-bottom: 10px;">
+        提交诊断结果
+      </button>
+    </div>
+
+    <!-- <div class="bigImg" style="height: 100%;width: 100%;" >
+       <img ng-src="img/adam.jpg">
+     </div>-->
+    <script id="my-popover.html" type="text/ng-template">
+      <ion-popover-view>
+        <ion-header-bar>
+          <h1 class="title">选择病变部位</h1>
+        </ion-header-bar>
+        <ion-content>
+          <ion-checkbox ng-repeat="item in sickPlace"
+                        ng-model="item.checked"
+          >
+            {{ item.text }}
+          </ion-checkbox>
+        </ion-content>
+      </ion-popover-view>
+    </script>
+
+    <!--    <script id="showBigImg.html" type="text/ng-template">
+          <ion-modal-view>
+              <ion-slide-box active-slide="myActiveSlide">
+                <ion-slide>
+                 <img ng-src="img/ben.png"/>
+                </ion-slide>
+                <ion-slide>
+                  <div class="box yellow"><h1>YELLOW</h1></div>
+                </ion-slide>
+                <ion-slide>
+                  <div class="box pink"><h1>PINK</h1></div>
+                </ion-slide>
+              </ion-slide-box>
+           <button ng-click="hideBigImg()">关闭</button>
+          </ion-modal-view>
+        </script>-->
+    <script id="showBigImg.html" type="text/ng-template">
+      <ion-modal-view ng-click="closeModal()">
+        <ion-header-bar>
+          <h1 class="title">My Modal title</h1>
+        </ion-header-bar>
+        <ion-content>
+          <ion-slide-box active-slide="2"
+                         show-pager="true">
+            <ion-slide ng-repeat="oImage in aImages track by $index">
+              <div class="box">
+                <img ng-src="{{oImage.src}}"/>
+                <p class="info">{{oImage.msg}}</p>
+              </div>
+            </ion-slide>
+          </ion-slide-box>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+  </ion-content>
+</ion-view>
+
+

@@ -1,0 +1,88 @@
+<ion-view view-title="{{patient.cureUserName}}" hide-tabs="true">
+  <ion-content class="" on-swipe-right="onSwipeRight();">
+    <div class="">
+      <!--  <div class="item item-divider" style="text-align: center;">
+          未接诊详情
+        </div>-->
+      <div class="item item-avatar">
+        <img src="../img/max.png">
+        <h2>{{patient.docName}}</h2>
+        <p>{{patient.askTime}}发出问诊请求</p>
+      </div>
+      <div class="item item-divider">
+        <h1 class="spine-title">基本信息</h1>
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row" style="font-size: 1.2rem">
+          <div class="col">病人：{{patient.cureUserName}}</div>
+          <div class="col">性别：{{patient.patietnInfo.sex}}</div>
+          <div class="col">性别：{{patient.userSex =='1'?'男':'女'}}</div>
+          <!--<div class="col">民族：{{patient.patietnInfo.native}}</div>-->
+          <div class="col">民族：{{patient.birthday}}</div>
+        </div>
+        <div class="row" style="font-size: 1.2rem;margin-top: 50px;">
+          <div class="col">年龄：{{patient.ageNum}}</div>
+          <div class="col">身高：{{patient.userHeight}} cm</div>
+          <div class="col">体重：{{patient.userWeight}} kg</div>
+        </div>
+        <div class="row" style="font-size: 1.2rem;margin-top: 50px;">
+          治疗病史:
+          <div style="border-bottom: 1px #000000 solid;min-width: 80%;padding-left: 10px;">无</div>
+        </div>
+        <div class="row" style="font-size: 1.2rem;margin-top: 50px;" >
+          初诊建议:
+          <div style="border-bottom: 1px #000000 solid;min-width: 80%;padding-left: 10px;">疑似有禁忌症</div>
+        </div>
+      </div>
+    </div>
+    <div class="" style="">
+      <div class="item item-divider" style="background: ">
+        <h1 class="spine-title">X光片</h1>
+      </div>
+      <ul class="list">
+        <li class="item" ng-repeat="ximg in patient.file track by $index">
+          <div class="card">
+            <div class="item item-image">
+              <img ng-src="{{ximg}}">
+            </div>
+            <div class="item item-divider">
+              <h2 style="text-align: center">x光片名称1</h2>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="" >
+      <div class="item item-divider">
+        <h1 class="spine-title">诊断结果</h1>
+      </div>
+      <div class="item item-text-wrap" ng-if="result === 'shiyingzheng'">
+        <div style="margin-bottom: 20px;">诊治意见：适应症，可以进行治疗</div>
+        <ul class="list">
+          <li class="item">
+            病变部位<span class="item-note">T1,T2,T3</span>
+          </li>
+          <li class="item">
+            病变偏向<span class="item-note">左</span>
+          </li>
+          <li class="item">
+            病变程度<span class="item-note">重</span>
+          </li>
+          <li class="item">
+            转角方式<span class="item-note">交替</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="item item-text-wrap" style="margin-bottom: 20px;" ng-if="result === 'jinjizheng'">
+        <div style="font-size: 1.5rem;">该病人为<strong style="color: red">骨髓瘤</strong>禁忌症患者，无法使用本系统进行治疗</div>
+      </div>
+
+      <div class="item item-text-wrap" style="margin-bottom: 20px;" ng-if="result === 'feishiyingzheng'">
+        <div style="font-size: 1.5rem;">该病人为<strong style="color: red">非适应症患者</strong>建议继续观察</div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
+
+

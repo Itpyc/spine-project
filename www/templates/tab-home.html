@@ -1,0 +1,39 @@
+<ion-view view-title="首页" show-tabs="false" hide-back-button="true">
+  <ion-content class="" style="background: #eeeeee;">
+    <div class="" style="margin-top: 10px;">
+      <div class="list" style="width: 100%;">
+        <div class="item " style="border-left: 6px #0a9dc7 solid;">
+          未接诊病人列表
+        </div>
+        <a ng-click="goToDetail(patient.askId,patient)" ng-repeat="patient in NJZList_5 track by $index"
+           class="item item-remove-animate item-avatar item-icon-right">
+          <!-- <img ng-src="{{patient.face}}">-->
+          <img ng-src="img/doctor.png">
+          <h2>
+            申请人：
+            <span ng-bind="patient.docName"></span>
+            <span class="shenqing-time" style="">{{patient.askTime}}</span>
+          </h2>
+          <p>病人信息：{{patient.cureUserName}}，{{patient.cureUserName=='1'?'男':'女'}}，<!--{{patient.ageNum}}岁,-->身高{{patient.userHeight}}cm，体重{{patient.userWeight}}kg</p>
+          <!-- <p>病人描述：{{chat.desc}}</p>-->
+          <i class="icon ion-chevron-right icon-accessory"></i>
+        </a>
+        <div class="item">
+          <button ng-click="getMore_NJZ();" class="button button-calm button-block">查看更多</button>
+        </div>
+      </div>
+    </div>
+    <div ng-dblclick="getMore_YJZ();" style="margin-top: 10px;" class="padding-bottom">
+      <div class="item" style="border-left: 6px #ef473a solid;">
+        已接诊病人列表
+      </div>
+      <div class="item item-text-wrap">
+        <highchart config="chartConfig1"></highchart>
+        <highchart config="chartConfig2"></highchart>
+      </div>
+      <div class="item">
+        <button ng-click="getMore_YJZ();" class="button button-assertive button-block">查看更多</button>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
