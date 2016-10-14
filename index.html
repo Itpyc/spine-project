@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        #remoteVideo {
+            width: 500px;
+            height: 500px;
+            border: 1px #cccccc solid;
+            margin: 0 auto;
+            display: inline-block;
+            flex: 3;
+        }
+
+        #close {
+            background: #ff5f44;
+            color: whitesmoke;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            flex: 1;
+            margin: 50px;
+        }
+
+        #close:hover ,#openLocal:hover{
+            -webkit-transform: scale(0.99);
+        }
+        #localVideo {
+            border: 1px #cccccc solid;
+            width: 500px;
+            height: 500px;
+            display: inline-block;
+            flex: 1;
+
+        }
+        #openLocal {
+            background: #258869;
+            color: whitesmoke;
+            text-align: center;
+            cursor: pointer;
+            flex: 1;
+            margin: 50px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1 style="text-align: center">专家视频诊断</h1>
+<div style="border: 1px #cccccc solid;">
+    <div style="display: flex">
+        <h2 style="flex: 3;text-align: center;">远程视频</h2>
+        <h2 id="localTitle" style="flex: 1;text-align: center">本地视频</h2>
+    </div>
+    <div style="display: flex">
+        <video id="remoteVideo"></video>
+        <video muted="true" id="localVideo"></video>
+    </div>
+
+    <div style="display: flex">
+        <div id="close">关闭</div>
+        <div id="openLocal">打开本地视频</div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+    var GetQueryString =function (name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+    //页面加载完成
+    window.onload = function () {
+        //1、获取视频请求者的askId以及要请求访问的医生userId
+
+        var askId = GetQueryString('askId');
+        var userId = GetQueryString('userId');
+      /*  var splited = window.location.search.split('?')[1];
+        var askId = splited.split('&')[1].split('=')[1];
+        var userId = splited.split('&')[0].split('=')[1];*/
+        console.log(userId + '//////' + askId)
+        var socket = io();//打开socket
+        console.log(socket);
+        socket.on('connect', function () {
+            console.log('链接成功');
+            socket.emit('patient connect', askId, userId, '病人连接成功');//创建连接
+        });
+        //向服务器发送一个请求通话通知
+        // console.log(isCaller);
+        navigator.getUserMedia ||
+        (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
+        var local = document.getElementById('localVideo');//本地
+        var remoteVideo = document.getElementById('remoteVideo');//远程
+        var iceServer = {
+            "iceServers": [{
+                "url": "stun:stun.l.google.com:19302"
+            }, {
+                "url": "turn:numb.viagenie.ca",
+                "username": "webrtc@live.com",
+                "credential": "muazkh"
+            }]
+        };
+        // 创建PeerConnection实例 (参数为null则没有iceserver，即使没有stunserver和turnserver，仍可在局域网下通讯)
+        var pc = new webkitRTCPeerConnection(iceServer);
+        pc.onicecandidate = function (event) {
+            console.log(event.candidate + '----onicecandidate-----接受到的信息')
+            if (event.candidate !== null) {
+                socket.emit('message', askId, userId, JSON.stringify({
+                    "event": "_ice_candidate",
+                    "data": {
+                        "candidate": event.candidate
+                    }
+                }));
+            }
+        };
+        // 获取本地音频和视频流
+        navigator.getUserMedia({
+            "audio": true,
+            "video": true
+        }, function (stream) {
+            // 发送offer和answer的函数，发送本地session描述
+            var sendOfferFn = function (desc) {
+                        pc.setLocalDescription(desc);
+                        socket.emit('message', askId, userId, JSON.stringify({
+                            "event": "_offer",
+                            "data": {
+                                "sdp": desc
+                            }
+                        }));
+                    },
+                    sendAnswerFn = function (desc) {
+                        pc.setLocalDescription(desc);
+                        socket.emit('message', askId, userId, JSON.stringify({
+                            "event": "_answer",
+                            "data": {
+                                "sdp": desc
+                            }
+                        }));
+                    };
+            //绑定本地媒体流到video标签用于输出
+            if (window.URL) {
+                local.src = window.URL.createObjectURL(stream);
+            } else {
+                local.src = stream;
+            }
+            //videoStream = stream;
+            local.autoplay = true;
+            //向PeerConnection中加入需要发送的流
+            pc.addStream(stream);
+            console.log(pc)
+            //如果是发起方则发送一个offer信令,开始视频
+            //如果医生接受请求，并且打开视频，发送本地媒体流
+            socket.on('accept', function () {
+                console.log('对方应答成功，可以视频通话')
+                pc.createOffer(sendOfferFn, function (error) {
+                    console.log('Failure callback: ' + error);
+                });
+            });
+        }, function (error) {
+            //处理媒体流创建失败错误
+            alert('getUserMedia error: ' + error);
+        });
+        //交换信令
+        socket.on('message', function (from, to, data) {
+            console.log(data + "来自于服务器");
+            var json = JSON.parse(data);
+            console.log('onmessage: ', json);
+            //如果是一个ICE的候选，则将其加入到PeerConnection中，否则设定对方的session描述为传递过来的描述
+            if (json.event === "_ice_candidate") {
+                console.log('我是一个ice候选者++++++++++++++++++++++' + 'dddddd' + json.data.candidate);
+                pc.addIceCandidate(new RTCIceCandidate(json.data.candidate));
+            } else {
+                console.log(json.data.sdp)
+                pc.setRemoteDescription(new RTCSessionDescription(json.data.sdp));
+                // 如果是一个offer，那么需要回复一个answer
+            }
+        });
+        // 如果检测到媒体流连接到本地，将其绑定到一个video标签上输出
+        pc.onaddstream = function (event) {
+            console.log(event.stream + '----检测到媒体流');
+            if (window.URL) {
+                remoteVideo.src = window.URL.createObjectURL(event.stream);
+            } else {
+                remoteVideo.src = event.stream;
+            }
+            remoteVideo.src = URL.createObjectURL(event.stream);
+            remoteVideo.autoplay = true;
+        };
+    }
+    document.getElementById('close').onclick = function () {
+        window.opener = null;
+        window.open('', '_self');
+        window.close();
+        /* socket.emit('finishVideoTalk');
+         socket.disconnect();//关闭连接
+         if (pc) {
+         pc.close();
+         //  console.log(pc1);
+         }*/
+    }
+    document.getElementById('openLocal').onclick = function () {
+        console.log(document.querySelector('#localVideo').style.display)
+        if (document.querySelector('#localVideo').style.display == "none") {
+            document.querySelector('#localVideo').style.display = 'block';
+            document.querySelector('#localTitle').style.display="block";
+            document.querySelector('#openLocal').innerText = '关闭本地视频';
+        } else {
+            document.querySelector('#localVideo').style.display = 'none';
+            document.querySelector('#openLocal').innerText = '打开本地视频';
+            document.querySelector('#localTitle').style.display="none";
+
+        }
+
+    }
+</script>
+</body>
+</html>
